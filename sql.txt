@@ -1,0 +1,31 @@
+CREATE TABLE `channel` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(20) NOT NULL COMMENT '标题',
+  `is_self` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 1: 自营 2: 非自营',
+  `remark` varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
+  `channel_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：-1-无效，0-未知（默认），1-有效',
+  `channel_sort` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '自定义排序顺序，越大越靠前',
+  `store_count` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '药店数量',
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_title` (`title`),
+  KEY `idx_sort` (`channel_sort`)
+) ENGINE=InnoDB COMMENT='药品供应商渠道';
+
+
+CREATE TABLE `store` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `channel_id` int(11) NOT NULL COMMENT '供应商渠道ID',
+  `title` varchar(50) NOT NULL COMMENT '药店名',
+  `address` varchar(50) NOT NULL DEFAULT '' COMMENT '药店详细地址（去除省市区信息）',
+  `cellphone` varchar(20) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `creator_name` varchar(30) NOT NULL DEFAULT '' COMMENT '联系人',
+  `store_status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '状态：-1-无效，0-未知，1-有效',
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_channel_id` (`channel_id`)
+) ENGINE=InnoDB COMMENT='药店';
